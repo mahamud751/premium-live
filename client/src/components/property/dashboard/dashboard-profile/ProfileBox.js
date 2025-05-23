@@ -3,20 +3,28 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import React, { useState } from "react";
 import Image from "next/image";
 
-const ProfileBox = ({ onImageChange }) => {
-  const [uploadedImage, setUploadedImage] = useState(null);
+const ProfileBox = ({ onImageChange, uploadedImage, apiImage }) => {
+  const [localUploadedImage, setLocalUploadedImage] = useState(null);
 
   const handleUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader(); // Corrected: Use = instead of |
       reader.onload = (e) => {
-        setUploadedImage(e.target.result);
+        // Corrected: Use = instead of |
+        setLocalUploadedImage(e.target.result);
         onImageChange(file); // Pass the file to the parent
       };
       reader.readAsDataURL(file);
     }
   };
+
+  // Determine which image to display: local uploaded image, parent uploaded image, API image, or default
+  const displayImage =
+    localUploadedImage ||
+    uploadedImage ||
+    apiImage ||
+    "/images/listings/profile-1.jpg";
 
   return (
     <div className="profile-box position-relative d-md-flex align-items-end mb50">
@@ -25,7 +33,7 @@ const ProfileBox = ({ onImageChange }) => {
           width={240}
           height={220}
           className="w-100 cover h-100"
-          src={uploadedImage || "/images/listings/profile-1.jpg"}
+          src={displayImage}
           alt="profile avatar"
         />
 
@@ -34,7 +42,7 @@ const ProfileBox = ({ onImageChange }) => {
           style={{ border: "none" }}
           data-tooltip-id="profile_del"
           onClick={() => {
-            setUploadedImage(null);
+            setLocalUploadedImage(null);
             onImageChange(null); // Clear the image
           }}
         >

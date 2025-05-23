@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProfileBox from "./ProfileBox";
 
 const PersonalInfo = ({ onImageChange, uploadedImage }) => {
   const { token } = useAuth();
@@ -12,6 +13,7 @@ const PersonalInfo = ({ onImageChange, uploadedImage }) => {
     email: "",
     phone: "",
     address: "",
+    image: [], // Initialize image as array to match readdata structure
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -118,6 +120,11 @@ const PersonalInfo = ({ onImageChange, uploadedImage }) => {
 
   return (
     <>
+      <ProfileBox
+        onImageChange={onImageChange}
+        uploadedImage={uploadedImage}
+        apiImage={user.image[0]}
+      />
       <form className="form-style1" onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-sm-6 col-xl-4">
@@ -305,6 +312,7 @@ const PersonalInfo = ({ onImageChange, uploadedImage }) => {
           {/* End .col */}
         </div>
       </form>
+
       <ToastContainer />
     </>
   );

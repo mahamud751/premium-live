@@ -40,11 +40,14 @@ const DashboardMyProfile = () => {
               <div className="row">
                 <div className="col-xl-12">
                   <div className="ps-widget bgc-white bdrs12 default-box-shadow2 p30 mb30 overflow-hidden position-relative">
-                    <div className="col-xl-7">
+                    {/* <div className="col-xl-7">
                       <ProfileBox onImageChange={handleImageChange} />
-                    </div>
+                    </div> */}
                     <div className="col-lg-12">
-                      <PersonalInfo uploadedImage={uploadedImage} />
+                      <PersonalInfo
+                        uploadedImage={uploadedImage}
+                        onImageChange={handleImageChange}
+                      />
                     </div>
                   </div>
                 </div>
