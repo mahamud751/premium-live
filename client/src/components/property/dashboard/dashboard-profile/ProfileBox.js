@@ -9,9 +9,8 @@ const ProfileBox = ({ onImageChange, uploadedImage, apiImage }) => {
   const handleUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader(); // Corrected: Use = instead of |
+      const reader = new FileReader();
       reader.onload = (e) => {
-        // Corrected: Use = instead of |
         setLocalUploadedImage(e.target.result);
         onImageChange(file); // Pass the file to the parent
       };
@@ -19,12 +18,16 @@ const ProfileBox = ({ onImageChange, uploadedImage, apiImage }) => {
     }
   };
 
-  // Determine which image to display: local uploaded image, parent uploaded image, API image, or default
-  const displayImage =
-    localUploadedImage ||
-    uploadedImage ||
-    apiImage ||
-    "/images/listings/profile-1.jpg";
+  // Determine which image to display with fallbacks
+  const getDisplayImage = () => {
+    if (localUploadedImage) return localUploadedImage;
+    if (uploadedImage) return URL.createObjectURL(uploadedImage);
+    if (apiImage && typeof apiImage === "string" && apiImage.startsWith("http"))
+      return apiImage;
+    return "/images/listings/profile-1.jpg";
+  };
+
+  const displayImage = getDisplayImage();
 
   return (
     <div className="profile-box position-relative d-md-flex align-items-end mb50">
@@ -35,23 +38,27 @@ const ProfileBox = ({ onImageChange, uploadedImage, apiImage }) => {
           className="w-100 cover h-100"
           src={displayImage}
           alt="profile avatar"
+          onError={(e) => {
+            e.target.src = "/images/listings/profile-1.jpg";
+          }}
         />
 
-        <button
-          className="tag-del"
-          style={{ border: "none" }}
-          data-tooltip-id="profile_del"
-          onClick={() => {
-            setLocalUploadedImage(null);
-            onImageChange(null); // Clear the image
-          }}
-        >
-          <span className="fas fa-trash-can" />
-        </button>
+        {displayImage !== "/images/listings/profile-1.jpg" && (
+          <button
+            className="tag-del"
+            style={{ border: "none" }}
+            data-tooltip-id="profile_del"
+            onClick={() => {
+              setLocalUploadedImage(null);
+              onImageChange(null); // Clear the image
+            }}
+          >
+            <span className="fas fa-trash-can" />
+          </button>
+        )}
 
         <ReactTooltip id="profile_del" place="right" content="Delete Image" />
       </div>
-      {/* End .profile-img */}
 
       <div className="profile-content ml30 ml0-sm">
         <label className="upload-label pointer">

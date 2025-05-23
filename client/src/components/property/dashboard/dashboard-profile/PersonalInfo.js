@@ -71,10 +71,14 @@ const PersonalInfo = ({ onImageChange, uploadedImage }) => {
     data.append("phone", formData.phone);
     data.append("address", formData.address);
 
-    // Add image handling
+    // Add image handling only if uploadedImage exists
     if (uploadedImage) {
-      // If there's an existing image from API, add it to image_delete[0]
-      if (user.image && user.image.length > 0) {
+      // If there's an existing image from API and it's a valid URL
+      if (
+        user.image?.[0] &&
+        typeof user.image[0] === "string" &&
+        user.image[0].startsWith("http")
+      ) {
         data.append("image_delete[0]", user.image[0]);
       }
       // Add the new uploaded image
