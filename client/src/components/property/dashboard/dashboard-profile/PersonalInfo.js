@@ -64,11 +64,20 @@ const PersonalInfo = ({ onImageChange, uploadedImage }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
+
+    // Add regular form data
     data.append("name", formData.name);
     data.append("email", formData.email);
     data.append("phone", formData.phone);
     data.append("address", formData.address);
+
+    // Add image handling
     if (uploadedImage) {
+      // If there's an existing image from API, add it to image_delete[0]
+      if (user.image && user.image.length > 0) {
+        data.append("image_delete[0]", user.image[0]);
+      }
+      // Add the new uploaded image
       data.append("image", uploadedImage);
     }
 
@@ -83,6 +92,7 @@ const PersonalInfo = ({ onImageChange, uploadedImage }) => {
           },
         }
       );
+
       toast.success("Profile updated successfully!");
       setUser({
         ...user,
