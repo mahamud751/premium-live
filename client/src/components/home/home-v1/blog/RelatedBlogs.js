@@ -51,43 +51,45 @@ function RelatedBlogs() {
       >
         {blogsData?.map((post, index) => (
           <SwiperSlide key={index}>
-            <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
-              {post?.image?.[0] ? (
-                <Image
-                  width={386}
-                  height={271}
-                  className="w-full h-72 object-cover"
-                  src={post.image[0]}
-                  alt={post?.title || "Blog image"}
-                  onError={(e) => {
-                    e.target.src = "/fallback-image.jpg";
-                  }}
-                />
-              ) : (
-                <Image
-                  width={386}
-                  height={271}
-                  className="w-full h-72 object-cover"
-                  src="/fallback-image.jpg"
-                  alt="No image available"
-                />
-              )}
-              <div className="p-4">
-                <Link
-                  href={`/blogs/${post.id}`}
-                  className="text-lg font-semibold text-gray-900 hover:text-blue-600"
-                >
-                  {post.title}
-                </Link>
-                <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
-                <a
-                  href={`/blogs/${post.id}`}
-                  className="mt-4 inline-block text-blue-600 font-semibold hover:underline"
-                >
-                  Read More
-                </a>
+            <Link href={`/blogs/${post?.slug}`}>
+              <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
+                {post?.image?.[0] ? (
+                  <Image
+                    width={386}
+                    height={271}
+                    className="w-full h-72 object-cover"
+                    src={post.image[0]}
+                    alt={post?.title || "Blog image"}
+                    onError={(e) => {
+                      e.target.src = "/fallback-image.jpg";
+                    }}
+                  />
+                ) : (
+                  <Image
+                    width={386}
+                    height={271}
+                    className="w-full h-72 object-cover"
+                    src="/fallback-image.jpg"
+                    alt="No image available"
+                  />
+                )}
+                <div className="p-4">
+                  <Link
+                    href={`/blogs/${post?.slug}`}
+                    className="text-lg font-semibold text-gray-900 hover:text-blue-600"
+                  >
+                    {post.title.slice(0, 20)}
+                  </Link>
+                  <p className="text-gray-600 text-sm mt-2">{post.excerpt}</p>
+                  <Link
+                    href={`/blogs/${post?.slug}`}
+                    className="mt-4 inline-block text-blue-600 font-semibold hover:underline"
+                  >
+                    Read More
+                  </Link>
+                </div>
               </div>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
