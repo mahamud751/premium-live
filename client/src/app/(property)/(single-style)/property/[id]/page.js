@@ -13,7 +13,7 @@ import FilterProperties from "@/components/home/home-v1/FilterProperties";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination as SwiperPagination } from "swiper";
 import Image from "next/image";
-import Link from "next/link";
+
 import axios from "axios";
 import { useAuth } from "@/hooks/auth";
 import { useQuery } from "@tanstack/react-query";
@@ -164,7 +164,7 @@ const Propery = () => {
               <div className="column">
                 <div className="default-box-shadow1 bdrs12 bdr1 p30 mb30-md bgc-white position-relative">
                   <h4 className="form-title mb5">Book A Free Consultation</h4>
-                  <ScheduleTour />
+                  <ScheduleTour product={product} />
                 </div>
 
                 <div className="agen-personal-info position-relative bgc-white default-box-shadow1 bdrs12 p30 mt30">

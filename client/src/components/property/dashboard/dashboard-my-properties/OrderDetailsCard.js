@@ -28,7 +28,7 @@ const OrderDetailsCard = ({ id }) => {
         setOrder(orderRes.data.data);
 
         const paymentsRes = await axios.get(
-          `https://erp.samironbarai.xyz/v1/payments?_entity_type=Product&_entity_id=1`,
+          `https://erp.samironbarai.xyz/v1/payments?_entity_type=Product&_entity_id=${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const OrderDetailsCard = ({ id }) => {
         setPayments(paymentsRes?.data?.data);
 
         const purchaseRes = await axios.get(
-          `https://erp.samironbarai.xyz/v1/purchases?_project_id=1`,
+          `https://erp.samironbarai.xyz/v1/purchases?_project_id=${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -258,7 +258,7 @@ const OrderDetailsCard = ({ id }) => {
                 <th className="p-3 text-left">Amount</th>
                 <th className="p-3 text-left">Method</th>
                 <th className="p-3 text-left">Type</th>
-                <th className="p-3 text-left">Status</th>
+
                 <th className="p-3 text-left">Note</th>
                 <th className="p-3 text-left">Document</th>
               </tr>
@@ -275,22 +275,10 @@ const OrderDetailsCard = ({ id }) => {
                   <td className="p-3 font-medium text-blue-600">
                     {p.transaction_id}
                   </td>
-                  <td className="p-3 text-green-600">
-                    ৳{(p.amount / 100).toFixed(2)}
-                  </td>
+                  <td className="p-3 text-green-600">৳{p.amount || 0}</td>
                   <td className="p-3">{p.payment_method}</td>
                   <td className="p-3">{p.payment_type}</td>
-                  <td className="p-3">
-                    {p.payment_status ? (
-                      <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
-                        {p.payment_status}
-                      </span>
-                    ) : (
-                      <span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">
-                        Pending
-                      </span>
-                    )}
-                  </td>
+
                   <td className="p-3">{p.payment_note}</td>
                   <td className="p-3">
                     <a

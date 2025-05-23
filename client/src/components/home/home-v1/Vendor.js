@@ -1,54 +1,55 @@
+"use client";
+import { useAuth } from "@/hooks/auth";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import Image from "next/image";
 
-const vendors = [
-  {
-    id: 1,
-    name: "Elite Homes",
-    info: "Over 100 properties listed",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 2,
-    name: "Urban Realty",
-    info: "Top-rated agents in city",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 3,
-    name: "Luxury Estates",
-    info: "Specialized in villas & mansions",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-  },
-  {
-    id: 4,
-    name: "Coastal Living",
-    info: "Experts in beachfront homes",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-  },
-];
-
 const Vendor = () => {
+  const { token } = useAuth();
+
+  const fetchLocations = async () => {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASEURL}/v1/vendors`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.data;
+  };
+
+  const { data: data, isLoading } = useQuery({
+    queryKey: ["vendors"],
+    queryFn: fetchLocations,
+  });
+
+  if (isLoading) {
+    return (
+      <section className="our-faq pt-0 py-12 md:px-4">
+        <div className="container mx-auto max-w-7xl">
+          <p className="text-center">Loading Locations...</p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section>
-      <h2 className="text-3xl font-bold text-center mb-8">
-        Top Real Estate Vendors
-      </h2>
+      <h2 className="text-3xl font-bold text-center mb-8">Top Vendors</h2>
       <div className="grid grid-cols-1 mt-5 md:mt-0 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {vendors.map((vendor) => (
+        {data?.map((vendor) => (
           <div
             key={vendor.id}
             className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
           >
             <div className="w-full h-48 relative">
               <Image
-                src={vendor.image}
-                alt={vendor.name}
-                layout="fill"
-                objectFit="cover"
+                src={vendor.images}
+                alt={vendor?.name || "City image"}
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                width={400}
+                height={300}
               />
             </div>
             <div className="p-4">

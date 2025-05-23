@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 
-const ScheduleTour = () => {
+const ScheduleTour = ({ product }) => {
   const [formData, setFormData] = useState({
     name: "",
+    id: product.id,
     email: "",
     phone: "",
     details: "",
@@ -32,6 +33,7 @@ const ScheduleTour = () => {
           },
           body: JSON.stringify({
             name: formData.name,
+            id: formData.id,
             mobile: formData.phone,
             email: formData.email,
             details: formData.details,

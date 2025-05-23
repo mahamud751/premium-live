@@ -97,7 +97,7 @@ const DefaultHeader = () => {
                         backgroundColor: "#00C194",
                       }}
                     >
-                      {user?.name}
+                      {user?.name.slice(0, 10)}
                       <i className="fal fa-arrow-right-long" />
                     </Link>
                   )}
