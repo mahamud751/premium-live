@@ -1,5 +1,8 @@
 "use client";
 
+import { useAuth } from "@/hooks/auth";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -43,54 +46,62 @@ const dummyData = [
 ];
 
 const ProjectFiltering = () => {
+  const { token } = useAuth();
+
+  const fetchLocations = async () => {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASEURL}/v1/projects`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.data;
+  };
+
+  const { data: locations, isLoading } = useQuery({
+    queryKey: ["projects"],
+    queryFn: fetchLocations,
+  });
+
+  if (isLoading) {
+    return (
+      <section className="our-faq pt-0 py-12 md:px-4">
+        <div className="container mx-auto max-w-7xl">
+          <p className="text-center">Loading Locations...</p>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="pt-0 pb-20 ">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {dummyData.map((listing) => (
-            <div className="market_page" key={listing.id}>
-              <Link href={`/property/${listing.id}`} className="block">
-                <div className="listing-style1 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-                  <div className="list-thumb">
-                    <Image
-                      width={400}
-                      height={300}
-                      className="w-full h-64 object-cover rounded-t-lg"
-                      src={listing.images}
-                      alt="Property image"
-                    />
-                  </div>
-                  <div className="list-content p-4">
-                    <h6 className="list-title font-bold text-lg">
-                      {listing.description.length > 60
-                        ? `${listing.description.slice(0, 60)}...`
-                        : listing.description}
-                    </h6>
-
-                    <div className="flex flex-wrap items-center gap-4 px-4 py-2 my-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors duration-200 text-sm">
-                      <span className="flex items-center text-gray-700">
-                        🏢 {listing.floor_number} Floor
-                      </span>
-                      <span className="flex items-center text-gray-700">
-                        🛏 {listing.bedroom} bed
-                      </span>
-                      <span className="flex items-center text-gray-700">
-                        🛁 {listing.bathroom} bath
-                      </span>
-                      <span className="flex items-center text-gray-700">
-                        📐 {listing.flat_size} sqft
-                      </span>
+          {locations?.map((city) => (
+            <div className="market_page" key={city.id}>
+              <Link href={`/property/${city.id}`} className="block">
+                <div className="home9-city-style">
+                  <Link href={`/project/${city?.id}`}>
+                    <div className="relative w-full h-48 rounded-lg overflow-hidden">
+                      {city?.images &&
+                        Array.isArray(city.images) &&
+                        city.images[0] && (
+                          <Image
+                            src={city.images[0]}
+                            alt={city?.name || "City image"}
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                            width={400}
+                            height={300}
+                          />
+                        )}
                     </div>
-
-                    <div className="flex justify-between items-center">
-                      <p className="font-bold text-green-600 text-sm">
-                        {listing.total_price.toLocaleString()} ৳
-                      </p>
-                      <p className="font-bold text-green-600 text-sm">
-                        {listing.status}
-                      </p>
+                    <div className="mt-3">
+                      <h6 className="text-lg font-semibold">{city?.name}</h6>
+                      <p className="text-sm text-gray-600">{city?.address}</p>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </Link>
             </div>

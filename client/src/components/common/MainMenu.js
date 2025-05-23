@@ -103,7 +103,7 @@ const MainMenu = () => {
         </Link>
       </li>
       <li className="visible_list dropitem">
-        <Link className="list-item" href="/properties">
+        <Link className="list-item" href="/contact">
           <span>Contact</span>
         </Link>
       </li>
