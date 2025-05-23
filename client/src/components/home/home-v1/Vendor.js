@@ -43,14 +43,18 @@ const Vendor = () => {
             className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition"
           >
             <div className="w-full h-48 relative">
-              <Image
-                src={vendor.images}
-                alt={vendor?.name || "City image"}
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                width={400}
-                height={300}
-              />
+              {vendor?.image &&
+                Array.isArray(vendor.image) &&
+                vendor.image[0] && (
+                  <Image
+                    src={vendor.image[0]}
+                    alt={vendor?.name || "City image"}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    width={400}
+                    height={300}
+                  />
+                )}
             </div>
             <div className="p-4">
               <h3 className="text-xl font-semibold">{vendor.name}</h3>

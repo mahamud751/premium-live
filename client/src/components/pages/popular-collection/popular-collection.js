@@ -7,6 +7,9 @@ import LightGallery from "lightgallery/react";
 import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgVideo from "lightgallery/plugins/video";
 import { useCallback, useRef } from "react";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/auth";
 
 const PopularCollection = () => {
   const lightGalleryRef = useRef(null);
@@ -48,6 +51,35 @@ const PopularCollection = () => {
     }
   }, []);
 
+  const { token } = useAuth();
+
+  const fetchLocations = async () => {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASEURL}/v1/popular-projects`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.data;
+  };
+
+  const { data: data, isLoading } = useQuery({
+    queryKey: ["popular"],
+    queryFn: fetchLocations,
+  });
+
+  if (isLoading) {
+    return (
+      <section className="our-faq pt-0 py-12 md:px-4">
+        <div className="container mx-auto max-w-7xl">
+          <p className="text-center">Loading Locations...</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <div className="py-10 px-4 sm:px-6 lg:px-8">
       <div>
@@ -67,25 +99,25 @@ const PopularCollection = () => {
           }}
           elementClassNames="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6"
         >
-          {collections.map((collection, index) => (
+          {data?.map((collection, index) => (
             <a
               key={index}
               className="relative group cursor-pointer"
-              data-src={collection.videoUrl}
-              data-sub-html={`<h4>${collection.category}</h4><p>${collection.location}</p>`}
+              data-src={collection?.videoUrl}
+              data-sub-html={`<h4>${collection?.category}</h4><p>${collection?.location}</p>`}
             >
               <div className="flex items-center justify-between gap-2 mb-2">
                 <h3 className="text-lg font-semibold uppercase">
-                  {collection.category}
+                  {collection?.category}
                 </h3>
                 <p className="text-sm border rounded px-3 py-1 uppercase">
-                  {collection.location}
+                  {collection?.location}
                 </p>
               </div>
               <div className="relative">
                 <img
-                  src={collection.thumbnail}
-                  alt={collection.category}
+                  src={collection?.thumbnail}
+                  alt={collection?.category}
                   className="w-full h-48 sm:h-64 object-cover rounded-lg"
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">

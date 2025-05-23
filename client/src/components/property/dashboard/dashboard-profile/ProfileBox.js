@@ -3,7 +3,7 @@ import { Tooltip as ReactTooltip } from "react-tooltip";
 import React, { useState } from "react";
 import Image from "next/image";
 
-const ProfileBox = () => {
+const ProfileBox = ({ onImageChange }) => {
   const [uploadedImage, setUploadedImage] = useState(null);
 
   const handleUpload = (event) => {
@@ -12,6 +12,7 @@ const ProfileBox = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         setUploadedImage(e.target.result);
+        onImageChange(file); // Pass the file to the parent
       };
       reader.readAsDataURL(file);
     }
@@ -32,7 +33,10 @@ const ProfileBox = () => {
           className="tag-del"
           style={{ border: "none" }}
           data-tooltip-id="profile_del"
-          onClick={() => setUploadedImage(null)}
+          onClick={() => {
+            setUploadedImage(null);
+            onImageChange(null); // Clear the image
+          }}
         >
           <span className="fas fa-trash-can" />
         </button>

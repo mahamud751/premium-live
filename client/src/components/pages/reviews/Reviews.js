@@ -98,56 +98,66 @@ const Reviews = () => {
             slidesPerView: 2,
           },
           1200: {
-            slidesPerView: 3,
+            slidesPerView: 2,
           },
         }}
       >
         {reviews?.map((review, idx) => (
           <SwiperSlide key={review.id || idx}>
-            <div className="  rounded-lg shadow-md flex flex-col md:flex-row  gap-1 ">
+            <div className="rounded-xl shadow-lg bg-white flex flex-col md:flex-row gap-6 p-6 transition-all duration-300 hover:shadow-xl">
+              {/* Video Thumbnail */}
               <LightGallery
                 speed={500}
                 plugins={[lgVideo]}
                 elementClassNames="video-wrapper flex-shrink-0"
               >
                 <a
-                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  href={
+                    review.videoUrl ||
+                    "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  }
                   data-lg-size="1280-720"
-                  data-video='{"source": [{"src":"https://www.youtube.com/watch?v=dQw4w9WgXcQ","type":"youtube"}], "attributes": {"preload": false, "controls": true}}'
-                  className="relative block w-full md:w-[400px] h-[300px] rounded-lg overflow-hidden group"
+                  data-video={JSON.stringify({
+                    source: [
+                      {
+                        src:
+                          review.videoUrl ||
+                          "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                        type: "youtube",
+                      },
+                    ],
+                    attributes: { preload: false, controls: true },
+                  })}
+                  className="relative block w-full md:w-[500px] h-[300px] md:h-[350px] rounded-xl overflow-hidden group"
                 >
                   <Image
                     src={getSingleImage(review.image?.[0])}
-                    alt="Review Video"
+                    alt="Review Video Thumbnail"
                     fill
                     style={{ objectFit: "cover" }}
-                    className="rounded-lg"
-                    sizes="(max-width: 768px) 100vw, 400px"
-                    priority={false}
+                    className="rounded-xl transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, 500px"
+                    priority={idx === 0} // Prioritize first image for performance
                   />
-                  <FaPlayCircle className="absolute inset-0 m-auto text-white text-5xl opacity-80 group-hover:scale-110 transition-transform duration-200" />
+                  <FaPlayCircle className="absolute inset-0 m-auto text-white text-6xl opacity-70 group-hover:opacity-90 group-hover:scale-110 transition-all duration-300" />
                 </a>
               </LightGallery>
 
-              <div className="flex flex-col justify-center flex-grow">
-                <div className="flex items-center mb-4">
-                  <Image
-                    src={getSingleImage(review.image?.[0])}
-                    alt={review.name || "Customer Review"}
-                    width={400}
-                    height={300}
-                    className="rounded-lg object-cover w-full h-[300px]"
-                  />
-                </div>
-                <div>
-                  <h4 className="text-lg font-semibold text-gray-800">
-                    {review.name || "Anonymous"}
-                  </h4>
-                  <p className="text-sm text-gray-500">
-                    {review?.message?.length > 80
-                      ? review.message.slice(0, 80) + "..."
-                      : review.message || "No message provided"}
-                  </p>
+              {/* Review Content */}
+              <div className="flex flex-col justify-center flex-grow space-y-4">
+                <h4 className="text-xl md:text-2xl font-bold text-gray-900">
+                  {review.name || "Anonymous"}
+                </h4>
+                <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                  {review?.message?.length > 100
+                    ? review.message.slice(0, 100) + "..."
+                    : review.message || "No message provided"}
+                </p>
+                <div className="flex items-center space-x-2">
+                  <span className="text-yellow-400 text-lg">★★★★★</span>
+                  <span className="text-sm text-gray-500">
+                    {review.rating || "5.0"} / 5.0
+                  </span>
                 </div>
               </div>
             </div>

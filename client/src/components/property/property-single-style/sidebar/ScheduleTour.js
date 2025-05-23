@@ -4,7 +4,7 @@ import React, { useState } from "react";
 const ScheduleTour = ({ product }) => {
   const [formData, setFormData] = useState({
     name: "",
-    id: product.id,
+    id: product?.id,
     email: "",
     phone: "",
     details: "",

@@ -1,16 +1,26 @@
 "use client";
-
 import { useAuth } from "@/hooks/auth";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const PersonalInfo = () => {
+const PersonalInfo = ({ onImageChange, uploadedImage }) => {
   const { token } = useAuth();
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  console.log(user);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -23,22 +33,74 @@ const PersonalInfo = () => {
             },
           }
         );
-        setUser(response.data.data);
+        const userData = response.data.data;
+        setUser(userData);
+        setFormData({
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          address: userData.address,
+        });
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch banner data");
+        setError("Failed to fetch user data");
         setLoading(false);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [token]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("email", formData.email);
+    data.append("phone", formData.phone);
+    data.append("address", formData.address);
+    if (uploadedImage) {
+      data.append("image", uploadedImage);
+    }
+
+    try {
+      const response = await axios.post(
+        "https://erp.samironbarai.xyz/v1/profile",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      toast.success("Profile updated successfully!");
+      setUser({
+        ...user,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        image: response.data.data.image || user.image,
+      });
+    } catch (err) {
+      toast.error("Failed to update profile");
+      console.error(err);
+    }
+  };
 
   if (loading) {
     return (
       <section className="our-faq pt-20 py-12 md:px-4">
         <div className="container mx-auto max-w-7xl">
-          <p className="text-center ">Loading User Info...</p>
+          <p className="text-center">Loading User Info...</p>
         </div>
       </section>
     );
@@ -53,186 +115,198 @@ const PersonalInfo = () => {
       </section>
     );
   }
+
   return (
-    <form className="form-style1">
-      <div className="row">
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Username
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              readOnly
-              defaultValue={user?.name}
-            />
+    <>
+      <form className="form-style1" onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Username
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                placeholder="Your Name"
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">Email</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Your Name"
-              readOnly
-              defaultChecked={user?.email}
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Email
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                placeholder="Your Email"
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">Phone</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              readOnly
-              defaultChecked={user?.phone}
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Phone
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                placeholder="Your Phone"
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              First Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                First Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Your First Name"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Last Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Last Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Your Last Name"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Position
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Position
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Your Position"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Language
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Language
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Your Language"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Company Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Company Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Your Company Name"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-sm-6 col-xl-4">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Tax Number
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              required
-            />
+          <div className="col-sm-6 col-xl-4">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Tax Number
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Your Tax Number"
+                readOnly
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-xl-12">
-          <div className="mb20">
-            <label className="heading-color ff-heading fw600 mb10">
-              Address
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Your Name"
-              readOnly
-              defaultChecked={user?.address}
-            />
+          <div className="col-xl-12">
+            <div className="mb20">
+              <label className="heading-color ff-heading fw600 mb10">
+                Address
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder="Your Address"
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-md-12">
-          <div className="mb10">
-            <label className="heading-color ff-heading fw600 mb10">
-              About me
-            </label>
-            <textarea
-              cols={30}
-              rows={4}
-              placeholder="There are many variations of passages."
-              readOnly
-              defaultChecked={user?.description}
-            />
+          <div className="col-md-12">
+            <div className="mb10">
+              <label className="heading-color ff-heading fw600 mb10">
+                About me
+              </label>
+              <textarea
+                cols={30}
+                rows={4}
+                placeholder="There are many variations of passages."
+                readOnly
+                defaultValue={user?.description}
+              />
+            </div>
           </div>
-        </div>
-        {/* End .col */}
+          {/* End .col */}
 
-        <div className="col-md-12">
-          <div className="text-end">
-            <button type="submit" className="ud-btn btn-dark">
-              Update Profile
-              <i className="fal fa-arrow-right-long" />
-            </button>
+          <div className="col-md-12">
+            <div className="text-end">
+              <button type="submit" className="ud-btn btn-dark">
+                Update Profile
+                <i className="fal fa-arrow-right-long" />
+              </button>
+            </div>
           </div>
+          {/* End .col */}
         </div>
-        {/* End .col */}
-      </div>
-    </form>
+      </form>
+      <ToastContainer />
+    </>
   );
 };
 
