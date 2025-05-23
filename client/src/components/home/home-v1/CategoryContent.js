@@ -92,6 +92,17 @@ export default function CategoryContent({
             </div>
             <div className="flex items-center justify-between border-gray-200 pb-2">
               <span className="flex items-center text-gray-700 font-medium">
+                <i className="fas fa-ruler-vertical text-green-500 mr-2"></i>{" "}
+                Type
+              </span>
+              <span className="text-gray-600">
+                {projectDetails.project_type
+                  ? `${projectDetails.project_type} floor`
+                  : "N/A"}
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-gray-200 pb-2">
+              <span className="flex items-center text-gray-700 font-medium">
                 <i className="fas fa-expand-arrows-alt text-purple-500 mr-2"></i>{" "}
                 Land Area
               </span>
