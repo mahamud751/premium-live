@@ -27,7 +27,7 @@ const Propery = () => {
 
   const fetchSingleProduct = async (id, token) => {
     const response = await axios.get(
-      `https://premium.samironbarai.xyz/v1/products/${id}`,
+      `https://erp.samironbarai.xyz/v1/products/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -75,9 +75,9 @@ const ProductDetails = ({ id }) => {
           {/* Header Section */}
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-6 text-gray-800">
             <h1 className="text-3xl font-bold">
-              Flat {product.flat_type} - {product.floor_number} Floor
+              Flat {product?.flat_type} - {product?.floor_number} Floor
             </h1>
-            <p className="mt-2 text-lg text-gray-600">{product.description}</p>
+            <p className="mt-2 text-lg text-gray-600">{product?.description}</p>
           </div>
 
           {/* Main Content */}
@@ -85,8 +85,8 @@ const ProductDetails = ({ id }) => {
             {/* Image Section */}
             <div>
               <img
-                src={product.images}
-                alt={`Flat ${product.flat_type}`}
+                src={product?.images}
+                alt={`Flat ${product?.flat_type}`}
                 className="w-full h-96 object-cover rounded-lg shadow-sm"
               />
             </div>
@@ -101,25 +101,25 @@ const ProductDetails = ({ id }) => {
                   <div>
                     <p className="text-gray-500">Flat Size</p>
                     <p className="text-lg font-medium text-gray-900">
-                      {product.flat_size} sqft
+                      {product?.flat_size} sqft
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500">Bedrooms</p>
                     <p className="text-lg font-medium text-gray-900">
-                      {product.bedroom}
+                      {product?.bedroom}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500">Bathrooms</p>
                     <p className="text-lg font-medium text-gray-900">
-                      {product.bathroom}
+                      {product?.bathroom}
                     </p>
                   </div>
                   <div>
                     <p className="text-gray-500">Balconies</p>
                     <p className="text-lg font-medium text-gray-900">
-                      {product.balcony}
+                      {product?.balcony}
                     </p>
                   </div>
                 </div>
@@ -134,31 +134,31 @@ const ProductDetails = ({ id }) => {
                   <div className="flex justify-between">
                     <p className="text-gray-500">Total Price</p>
                     <p className="text-lg font-medium text-gray-900">
-                      ৳{product.total_price.toLocaleString()}
+                      ৳{product?.total_price.toLocaleString()}
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-500">Unit Price</p>
                     <p className="text-lg font-medium text-gray-900">
-                      ৳{product.unit_price.toLocaleString()}/sqft
+                      ৳{product?.unit_price.toLocaleString()}/sqft
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-500">Parking Charge</p>
                     <p className="text-lg font-medium text-gray-900">
-                      ৳{product.parking_charge.toLocaleString()}
+                      ৳{product?.parking_charge.toLocaleString()}
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-500">Utility Charge</p>
                     <p className="text-lg font-medium text-gray-900">
-                      ৳{product.utility_charge.toLocaleString()}
+                      ৳{product?.utility_charge.toLocaleString()}
                     </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-500">Other Charges</p>
                     <p className="text-lg font-medium text-gray-900">
-                      ৳{product.other_charge.toLocaleString()}
+                      ৳{product?.other_charge.toLocaleString()}
                     </p>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ const ProductDetails = ({ id }) => {
                   <li className="flex items-center">
                     <span className="text-blue-400 mr-2">✔</span>
                     <span className="text-gray-600">
-                      {product.car_parking
+                      {product?.car_parking
                         ? "Car Parking Available"
                         : "No Car Parking"}
                     </span>
@@ -181,7 +181,7 @@ const ProductDetails = ({ id }) => {
                   <li className="flex items-center">
                     <span className="text-blue-400 mr-2">✔</span>
                     <span className="text-gray-600">
-                      {product.rooftop_gardening
+                      {product?.rooftop_gardening
                         ? "Rooftop Gardening"
                         : "No Rooftop Gardening"}
                     </span>
@@ -189,13 +189,13 @@ const ProductDetails = ({ id }) => {
                   <li className="flex items-center">
                     <span className="text-blue-400 mr-2">✔</span>
                     <span className="text-gray-600">
-                      {product.generator ? "Generator Backup" : "No Generator"}
+                      {product?.generator ? "Generator Backup" : "No Generator"}
                     </span>
                   </li>
                   <li className="flex items-center">
                     <span className="text-blue-400 mr-2">✔</span>
                     <span className="text-gray-600">
-                      {product.passenger_lift} Passenger Lift
+                      {product?.passenger_lift} Passenger Lift
                     </span>
                   </li>
                 </ul>
@@ -211,24 +211,24 @@ const ProductDetails = ({ id }) => {
                     Status:{" "}
                     <span
                       className={`font-medium ${
-                        product.payment_status === "pending"
+                        product?.payment_status === "pending"
                           ? "text-yellow-400"
                           : "text-blue-400"
                       }`}
                     >
-                      {product.payment_status}
+                      {product?.payment_status}
                     </span>
                   </p>
                   <p className="text-gray-500">
                     Due Amount:{" "}
                     <span className="font-medium text-gray-900">
-                      ৳{product.due_amount}
+                      ৳{product?.due_amount}
                     </span>
                   </p>
                   <p className="text-gray-500">
                     Paid Amount:{" "}
                     <span className="font-medium text-gray-900">
-                      ৳{product.paid_amount}
+                      ৳{product?.paid_amount}
                     </span>
                   </p>
                 </div>
