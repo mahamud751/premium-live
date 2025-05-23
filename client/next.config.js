@@ -3,9 +3,13 @@ const nextConfig = {
   images: {
     domains: [
       "localhost",
-      "premium.samironbarai.xyz", // ✅ Add this domain
+      "erp.samironbarai.xyz", // ✅ Add this domain
     ],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "erp.samironbarai.xyz", // ✅ Explicitly added
+      },
       {
         protocol: "https",
         hostname: "premium.samironbarai.xyz", // ✅ Explicitly added

@@ -73,7 +73,7 @@ const PropertyByCities = () => {
             },
           }}
         >
-          {locations?.slice(0, 8)?.map((city) => (
+          {locations?.map((city) => (
             <SwiperSlide key={city?.id}>
               <div className="home9-city-style">
                 <Link href={`/project/${city?.id}`}>

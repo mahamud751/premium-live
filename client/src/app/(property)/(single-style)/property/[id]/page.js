@@ -6,17 +6,20 @@ import OverView from "@/components/property/property-single-style/common/OverVie
 import PropertyDetails from "@/components/property/property-single-style/common/PropertyDetails";
 import PropertyHeader from "@/components/property/property-single-style/common/PropertyHeader";
 import ProperytyDescriptions from "@/components/property/property-single-style/common/ProperytyDescriptions";
-
 import ContactWithAgent from "@/components/property/property-single-style/sidebar/ContactWithAgent";
 import ScheduleTour from "@/components/property/property-single-style/sidebar/ScheduleTour";
 import PropertyGallery from "@/components/property/property-single-style/single-v1/PropertyGallery";
-import React from "react";
-
+import FilterProperties from "@/components/home/home-v1/FilterProperties";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination as SwiperPagination } from "swiper";
+import Image from "next/image";
+import Link from "next/link";
 import axios from "axios";
 import { useAuth } from "@/hooks/auth";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import FilterProperties from "@/components/home/home-v1/FilterProperties";
+import "swiper/swiper-bundle.min.css";
+import React from "react";
 
 const Propery = () => {
   const { id } = useParams();
@@ -24,7 +27,7 @@ const Propery = () => {
 
   const fetchSingleProduct = async (id, token) => {
     const response = await axios.get(
-      `https://erp.samironbarai.xyz/v1/products/${id}`,
+      `https://premium.samironbarai.xyz/v1/products/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -33,10 +36,17 @@ const Propery = () => {
     );
     return response.data.data;
   };
+
   const { data: product } = useQuery({
     queryKey: ["single-product", id],
     queryFn: () => fetchSingleProduct(id, token),
   });
+
+  // Ensure layout_images and documents are arrays
+  const layoutImages = Array.isArray(product?.layout_images)
+    ? product.layout_images
+    : [];
+  const documents = Array.isArray(product?.documents) ? product.documents : [];
 
   return (
     <>
@@ -65,6 +75,84 @@ const Propery = () => {
                 <h4 className="title fz17 mb30">Property Description</h4>
                 <ProperytyDescriptions product={product} />
 
+                {/* Layout Images Slider */}
+                {layoutImages.length > 0 && (
+                  <div className="mt50 mb30">
+                    <h4 className="title fz17 mb30">Layout Images</h4>
+                    <Swiper
+                      spaceBetween={30}
+                      modules={[Navigation, SwiperPagination]}
+                      navigation={{
+                        nextEl: ".layout-images-next__active",
+                        prevEl: ".layout-images-prev__active",
+                      }}
+                      pagination={{
+                        el: ".layout-images-pagination__active",
+                        clickable: true,
+                      }}
+                      slidesPerView={1}
+                      breakpoints={{
+                        300: { slidesPerView: 1 },
+                        768: { slidesPerView: 2 },
+                        1024: { slidesPerView: 2 },
+                        1200: { slidesPerView: 2 },
+                      }}
+                      className="mySwiper"
+                    >
+                      {layoutImages.map((image, index) => (
+                        <SwiperSlide key={index}>
+                          <div className="relative w-full h-80 rounded-lg overflow-hidden">
+                            <Image
+                              width={600}
+                              height={450}
+                              className="w-full h-full object-cover"
+                              src={image}
+                              alt={`Layout Image ${index + 1}`}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                            />
+                          </div>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                    <div className="row align-items-center justify-content-center mt-4">
+                      <div className="col-auto">
+                        <button className="layout-images-prev__active swiper_button">
+                          <i className="far fa-arrow-left-long" />
+                        </button>
+                      </div>
+                      <div className="col-auto">
+                        <div className="pagination swiper--pagination layout-images-pagination__active" />
+                      </div>
+                      <div className="col-auto">
+                        <button className="layout-images-next__active swiper_button">
+                          <i className="far fa-arrow-right-long" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Documents Links */}
+                {documents.length > 0 && (
+                  <div className="mt50 mb30">
+                    <h4 className="title fz17 mb30">Documents</h4>
+                    <ul className="list-group">
+                      {documents.map((doc, index) => (
+                        <li key={index} className="list-group-item">
+                          <a
+                            href={doc}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            Document {index + 1} (PDF)
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 <h4 className="title fz17 mb30 mt50">Property Details</h4>
                 <div className="row">
                   <PropertyDetails product={product} />
@@ -75,8 +163,7 @@ const Propery = () => {
             <div className="col-lg-4">
               <div className="column">
                 <div className="default-box-shadow1 bdrs12 bdr1 p30 mb30-md bgc-white position-relative">
-                  <h4 className="form-title mb5"> Book A Free Consultation</h4>
-
+                  <h4 className="form-title mb5">Book A Free Consultation</h4>
                   <ScheduleTour />
                 </div>
 

@@ -379,6 +379,7 @@ export interface Project {
   facing: string;
   building_height: string;
   land_area: string;
+  project_type: string;
   launching_date: string;
   hand_over_date: string;
   road_width: string;

@@ -105,13 +105,13 @@ const FilterProperties = () => {
                         <div className="item">
                           <div className="listing-style7 mb10">
                             <div className="list-thumb">
-                              <Image
+                              {/* <Image
                                 width={382}
                                 height={248}
                                 className="w-100 h-80 cover"
-                                src={getSingleImage(listing.images)}
+                                src={getSingleImage(listing?.images)}
                                 alt="listings"
-                              />
+                              /> */}
                               <div className="sale-sticker-wrap">
                                 <div
                                   className="list-tag2 rounded-0 fz12"

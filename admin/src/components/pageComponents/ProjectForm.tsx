@@ -37,6 +37,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
     hand_over_date: "",
     road_width: "",
     total_share: "",
+    project_type: "",
     documents: [],
     images: [],
     unit_images: [],
@@ -152,6 +153,18 @@ const ProjectForm: React.FC<ProjectFormProps> = ({
                   fullWidth
                   defaultValue={project?.road_width || ""}
                   onChange={(e) => handleChange("road_width", e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  id="project_type"
+                  label="Project Type"
+                  variant="outlined"
+                  name="project_type"
+                  fullWidth
+                  defaultValue={project?.project_type || ""}
+                  onChange={(e) => handleChange("project_type", e.target.value)}
                   InputLabelProps={{ shrink: true }}
                 />
               </Grid>
