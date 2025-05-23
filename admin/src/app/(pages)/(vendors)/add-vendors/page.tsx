@@ -6,17 +6,25 @@ import VendorForm from "@/components/pageComponents/VendorForm";
 
 const AddVendors: React.FC = () => {
   const additionalFields = <VendorForm vendor={null} />;
-
+  const photosData = {
+    image: [],
+  };
   return (
     <AddForm
       endpoint={`${process.env.NEXT_PUBLIC_BASEURL}/v1/admin/vendors`}
       additionalFields={additionalFields}
       buttonText="Add Vendor"
       id=""
-      //@ts-ignore
-      photosData={[]}
-      isNoPhotoFile={true}
+      photosData={photosData}
       link="vendors-list"
+      imageFields={[
+        {
+          key: "image",
+          isMultiple: false,
+          label: "Size must be (1920*860)",
+          isArray: false,
+        },
+      ]}
     />
   );
 };
