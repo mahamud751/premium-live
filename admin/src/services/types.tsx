@@ -29,6 +29,26 @@ export interface BannerApiResponse {
   data: Banner;
 }
 
+export interface Popular {
+  id: number;
+  title: string;
+  image: string[];
+  link: string;
+  position: number;
+  status: string;
+  created_by?: number;
+  updated_by?: number | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface PopularApiResponse {
+  status: string;
+  code: number;
+  message: string;
+  data: Popular;
+}
+
 export interface AdditionalSalary {
   id: number;
   user_id: string;

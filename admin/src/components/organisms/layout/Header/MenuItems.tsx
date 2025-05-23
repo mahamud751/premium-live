@@ -265,6 +265,21 @@ export const commonMenuItems: MenuItem[] = [
     ],
   },
   {
+    text: "Project Project",
+    icon: <Apartment className="text-lime-700" />,
+    path: "/popular",
+    submenus: [
+      {
+        text: "Add Popular",
+        path: "/add-popular",
+      },
+      {
+        text: "Popular List",
+        path: "/popular-list",
+      },
+    ],
+  },
+  {
     text: "Order",
     icon: <Receipt className="text-blue-800" />,
     path: "/orders",
