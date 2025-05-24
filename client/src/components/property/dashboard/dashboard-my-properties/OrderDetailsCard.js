@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/auth";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import CctvStream from "./CctvStream";
+import { useQuery } from "@tanstack/react-query";
 
 const OrderDetailsCard = ({ id }) => {
   const { token } = useAuth();
@@ -57,6 +58,31 @@ const OrderDetailsCard = ({ id }) => {
     fetchData();
   }, []);
 
+  const fetchSingleProject = async () => {
+    const response = await axios.get(
+      `https://erp.samironbarai.xyz/v1/projects`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response?.data;
+  };
+
+  const { data: projectData } = useQuery({
+    queryKey: ["single-project-data"],
+    queryFn: () => fetchSingleProject(),
+  });
+
+  const mainProject = projectData?.data?.find(
+    (project) => project.id == order?.project_id
+  );
+  const totalProgress =
+    mainProject?.progress_timeline
+      ?.filter((item) => item.status === "true")
+      ?.reduce((sum, item) => sum + parseInt(item.progress), 0) || 0;
+
   if (loading) {
     return (
       <section className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -83,9 +109,7 @@ const OrderDetailsCard = ({ id }) => {
         </div>
         <div className="bg-white rounded-2xl shadow-md p-6 text-center mt-2">
           <h2 className="text-lg font-semibold text-gray-600 mb-2">Progress</h2>
-          <p className="text-2xl font-bold text-yellow-500">
-            {order?.project?.progress}%
-          </p>
+          <p className="text-2xl font-bold text-yellow-500">{totalProgress}%</p>
         </div>
         <div className="bg-white rounded-2xl shadow-md p-6 text-center mt-2">
           <h2 className="text-lg font-semibold text-gray-600 mb-2">
