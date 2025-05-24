@@ -8,15 +8,17 @@ import { useQuery } from "@tanstack/react-query";
 
 const OrderDetailsCard = ({ id }) => {
   const { token } = useAuth();
-  const [order, setOrder] = useState([]);
+  const [order, setOrder] = useState(null); // Changed to null instead of []
   const [payments, setPayments] = useState([]);
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Fetch order and payments
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchOrderAndPayments = async () => {
       try {
+        setLoading(true);
         const orderRes = await axios.get(
           `https://erp.samironbarai.xyz/v1/orders/${id}`,
           {
@@ -38,25 +40,38 @@ const OrderDetailsCard = ({ id }) => {
         );
 
         setPayments(paymentsRes?.data?.data);
-
-        const purchaseRes = await axios.get(
-          `https://erp.samironbarai.xyz/v1/purchases?_project_id=${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setPurchases(purchaseRes?.data?.data);
-        setLoading(false);
       } catch (err) {
         setError("Failed to fetch order or payments data");
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
-  }, []);
+    fetchOrderAndPayments();
+  }, [id, token]);
+
+  // Fetch purchases once order.project_id is available
+  useEffect(() => {
+    const fetchPurchases = async () => {
+      if (order?.project_id) {
+        try {
+          const purchaseRes = await axios.get(
+            `https://erp.samironbarai.xyz/v1/purchases?_project_id=${order.project_id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setPurchases(purchaseRes?.data?.data);
+        } catch (err) {
+          setError("Failed to fetch purchases data");
+        }
+      }
+    };
+
+    fetchPurchases();
+  }, [order?.project_id, token]);
 
   const fetchSingleProject = async () => {
     const response = await axios.get(
@@ -95,11 +110,21 @@ const OrderDetailsCard = ({ id }) => {
     );
   }
 
+  if (error) {
+    return (
+      <section className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl w-full text-center">
+          <p className="text-lg text-red-600">{error}</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className=" bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-0 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-0 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-gray-900 mb-8 sm:mb-12">
-          Order Details - Flat {order.flat_type}
+          Order Details - Flat {order?.flat_type || "N/A"}
         </h1>
         <div className="bg-white rounded-2xl shadow-md p-6 text-center">
           <h2 className="text-lg font-semibold text-gray-600 mb-2">
@@ -283,14 +308,9 @@ const OrderDetailsCard = ({ id }) => {
             </div>
           </div>
         </div>
-
-        {/* Print Order Button */}
       </div>
       <div className="mt-10 text-center">
-        <button
-          // onClick={() => window.print()}
-          className="bg-blue-600 mt-5 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
+        <button className="bg-blue-600 mt-5 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           Payments Details
         </button>
       </div>
@@ -305,7 +325,6 @@ const OrderDetailsCard = ({ id }) => {
                 <th className="p-3 text-left">Amount</th>
                 <th className="p-3 text-left">Method</th>
                 <th className="p-3 text-left">Type</th>
-
                 <th className="p-3 text-left">Note</th>
                 <th className="p-3 text-left">Document</th>
               </tr>
@@ -325,7 +344,6 @@ const OrderDetailsCard = ({ id }) => {
                   <td className="p-3 text-green-600">৳{p.amount || 0}</td>
                   <td className="p-3">{p.payment_method}</td>
                   <td className="p-3">{p.payment_type}</td>
-
                   <td className="p-3">{p.payment_note}</td>
                   <td className="p-3">
                     <a
@@ -350,14 +368,11 @@ const OrderDetailsCard = ({ id }) => {
         </div>
       </div>
       <div className="mt-10 text-center">
-        <button
-          // onClick={() => window.print()}
-          className="bg-blue-600 mt-5 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
+        <button className="bg-blue-600 mt-5 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
           Purchase Details
         </button>
       </div>
-      {/* payment history */}
+      {/* purchase history */}
       <div className="p-4">
         <div className="overflow-x-auto">
           <table className="min-w-full border border-gray-200 text-sm">
@@ -367,7 +382,7 @@ const OrderDetailsCard = ({ id }) => {
                 <th className="p-3 text-left">Qty</th>
                 <th className="p-3 text-left">Total Price</th>
                 <th className="p-3 text-left">Unit Price</th>
-                <th className="p-3 text-left">description</th>
+                <th className="p-3 text-left">Description</th>
               </tr>
             </thead>
             <tbody>
@@ -392,9 +407,9 @@ const OrderDetailsCard = ({ id }) => {
             </tbody>
           </table>
 
-          {payments.length === 0 && (
+          {purchases.length === 0 && (
             <div className="text-center text-gray-500 py-8">
-              No payments found.
+              No purchases found.
             </div>
           )}
         </div>
