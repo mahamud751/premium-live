@@ -12,7 +12,7 @@ const OrderDetailsCard = ({ id }) => {
   const [purchases, setPurchases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log("purchases", purchases);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,6 +86,29 @@ const OrderDetailsCard = ({ id }) => {
           <p className="text-2xl font-bold text-yellow-500">
             {order?.project?.progress}%
           </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-md p-6 text-center mt-2">
+          <h2 className="text-lg font-semibold text-gray-600 mb-2">
+            Project Documents
+          </h2>
+          <div className="space-y-3">
+            {order?.project?.documents?.length > 0 ? (
+              order.project.documents.map((doc, index) => (
+                <p key={index} className="text-gray-700">
+                  <a
+                    href={doc}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    View Document {index + 1}
+                  </a>
+                </p>
+              ))
+            ) : (
+              <p className="text-gray-500">No project documents available.</p>
+            )}
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-4 md:pt-0 pb-4">
           <div className="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform duration-300">
