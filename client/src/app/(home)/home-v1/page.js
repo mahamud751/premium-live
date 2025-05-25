@@ -8,9 +8,9 @@ import FilterComponent from "@/components/home/home-v1/FilterComponent";
 import FilterProperties from "@/components/home/home-v1/FilterProperties";
 import PropertiesByCities from "@/components/home/home-v1/PropertiesByCities";
 import Slider from "@/components/home/home-v1/Slider";
-import Vendor from "@/components/home/home-v1/Vendor";
 import PopularCollection from "@/components/pages/popular-collection/popular-collection";
 import Reviews from "@/components/pages/reviews/Reviews";
+import ScheduleTour from "@/components/property/property-single-style/sidebar/ScheduleTour";
 
 export const metadata = {
   title: "The Premium Homes Ltd",
@@ -63,20 +63,6 @@ const Home_V1 = () => {
       >
         <div className="container">
           <div className="row">
-            <div className="col-lg-12" data-aos="fade-up">
-              <div className="main-title text-center">
-                <h2
-                  style={{
-                    fontSize: "35px",
-                    color: "#00C194",
-                    textAlign: "center",
-                    paddingTop: "30px",
-                  }}
-                >
-                  Trusted by the world’s best
-                </h2>
-              </div>
-            </div>
             <div className="col-lg-12 text-center">
               <div
                 className="dots_none nav_none"
@@ -90,10 +76,22 @@ const Home_V1 = () => {
         </div>
       </section>
 
-      <section className="pb90 pb20-md">
+      {/* <section className="pb90 pb20-md">
         <div className="container">
           <div className="row" data-aos="fade-up" data-aos-delay="300">
             <Vendor />
+          </div>
+        </div>
+      </section> */}
+      <section className="pt-0 pb60 mt-12">
+        <div className="container flex justify-center items-center">
+          <div className="col-lg-6">
+            <div className="column">
+              <div className="default-box-shadow1 bdrs12 bdr1 p30 mb30-md bgc-white position-relative">
+                <h4 className="form-title mb5">Book A Free Consultation</h4>
+                <ScheduleTour />
+              </div>
+            </div>
           </div>
         </div>
       </section>

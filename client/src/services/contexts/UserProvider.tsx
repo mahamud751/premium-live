@@ -26,6 +26,7 @@ export interface User {
   role_id?: number;
   created_at?: string;
   updated_at?: string;
+  image?: string[];
 }
 
 export interface AuthContextType {
@@ -110,6 +111,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
           role_id: data.data.user.role_id,
           created_at: data.data.user.created_at,
           updated_at: data.data.user.updated_at,
+          image: data.data.user.image,
         };
 
         setUser(userData);

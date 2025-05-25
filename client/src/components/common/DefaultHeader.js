@@ -10,8 +10,22 @@ import { useAuth } from "@/hooks/auth";
 
 const DefaultHeader = () => {
   const { token, user } = useAuth();
+  console.log("user in header", user);
   const [navbar, setNavbar] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWideScreen, setIsWideScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreenWidth = () => {
+      setIsWideScreen(window.innerWidth >= 1536);
+    };
+
+    checkScreenWidth(); // Initial check
+    window.addEventListener("resize", checkScreenWidth);
+    return () => {
+      window.removeEventListener("resize", checkScreenWidth);
+    };
+  }, []);
   const changeBackground = () => {
     if (window.scrollY >= 10) {
       setNavbar(true);
@@ -42,7 +56,11 @@ const DefaultHeader = () => {
         }`}
       >
         <nav className="posr">
-          <div className="container posr menu_bdrt1">
+          <div
+            className={`${
+              isWideScreen ? "container" : "w-full px-3"
+            } posr menu_bdrt1`}
+          >
             <div className="row align-items-center justify-content-between">
               <div className="col-auto">
                 <div className="d-flex align-items-center justify-content-between">
@@ -69,7 +87,7 @@ const DefaultHeader = () => {
                 </div>
               </div>
 
-              <div className="col-auto">
+              <div className="col-auto w-48">
                 <div className="d-flex align-items-center">
                   {!token ? (
                     <a
@@ -89,16 +107,21 @@ const DefaultHeader = () => {
                       <span className="d-none d-xl-block">Login</span>
                     </a>
                   ) : (
-                    <Link
-                      className="mx-2 ud-btn add-property bdrs60 mx-xl-4"
-                      href="/dashboard-home"
-                      style={{
-                        color: "white",
-                        backgroundColor: "#00C194",
-                      }}
-                    >
-                      {user?.name.slice(0, 10)}
-                      <i className="fal fa-arrow-right-long" />
+                    <Link className="mx-2" href="/dashboard-home">
+                      {user?.image?.[0] ? (
+                        <Image
+                          src={user.image[0]}
+                          alt="User Avatar"
+                          width={40}
+                          height={40}
+                          className="rounded-full mr-2 object-cover w-10 h-10"
+                        />
+                      ) : (
+                        <i
+                          className="far fa-user-circle fz16 mr-2"
+                          style={{ color: "white" }}
+                        />
+                      )}
                     </Link>
                   )}
                 </div>

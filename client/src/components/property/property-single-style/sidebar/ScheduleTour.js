@@ -1,10 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ScheduleTour = ({ product }) => {
   const [formData, setFormData] = useState({
     name: "",
-    id: product?.id,
+    product_id: product?.id || "", // Optional product_id
     email: "",
     phone: "",
     details: "",
@@ -12,6 +12,14 @@ const ScheduleTour = ({ product }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  // Update product_id if product.id changes
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      product_id: product?.id || "",
+    }));
+  }, [product?.id]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,6 +31,17 @@ const ScheduleTour = ({ product }) => {
     setError(null);
     setSuccess(null);
 
+    // Build request body, conditionally including product_id
+    const requestBody = {
+      name: formData.name,
+      mobile: formData.phone,
+      email: formData.email,
+      details: formData.details,
+    };
+    if (formData.product_id) {
+      requestBody.product_id = formData.product_id;
+    }
+
     try {
       const response = await fetch(
         "https://erp.samironbarai.xyz/v1/product-requests",
@@ -31,13 +50,7 @@ const ScheduleTour = ({ product }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            name: formData.name,
-            id: formData.id,
-            mobile: formData.phone,
-            email: formData.email,
-            details: formData.details,
-          }),
+          body: JSON.stringify(requestBody),
         }
       );
 
@@ -47,7 +60,13 @@ const ScheduleTour = ({ product }) => {
 
       const result = await response.json();
       setSuccess("Tour request submitted successfully!");
-      setFormData({ name: "", email: "", phone: "", details: "" });
+      setFormData({
+        name: "",
+        product_id: product?.id || "",
+        email: "",
+        phone: "",
+        details: "",
+      });
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -122,9 +141,23 @@ const ScheduleTour = ({ product }) => {
                     type="submit"
                     className="ud-btn btn-thm"
                     disabled={isSubmitting}
+                    style={{
+                      backgroundColor: "#10572A",
+                      color: "white",
+                      padding: "12px 24px",
+                      borderRadius: "8px",
+                      fontWeight: "600",
+                      transition: "background-color 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#0e4a22")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#10572A")
+                    }
                   >
                     {isSubmitting ? "Submitting..." : "Submit Request"}
-                    <i className="fal fa-arrow-right-long" />
+                    <i className="fal fa-arrow-right-long ml-2" />
                   </button>
                 </div>
               </div>

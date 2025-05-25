@@ -74,13 +74,13 @@ const MarketListing = ({ listings }) => {
                   <div className="mb-2 d-flex justify-content-between">
                     <p
                       className="fw-bold"
-                      style={{ fontSize: "15px", color: "#00C194" }}
+                      style={{ fontSize: "15px", color: "#10572A" }}
                     >
                       {listing.total_price.toLocaleString()} ৳
                     </p>
                     <p
                       className="fw-bold"
-                      style={{ fontSize: "15px", color: "#00C194" }}
+                      style={{ fontSize: "15px", color: "#10572A" }}
                     >
                       {listing.status || "N/A"}
                     </p>

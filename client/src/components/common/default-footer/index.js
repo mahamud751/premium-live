@@ -34,7 +34,7 @@ const Footer = () => {
 
           <div className="col-lg-7">
             <div className="footer-widget mb-4 mb-lg-5">
-              <Subscribe />
+              {/* <Subscribe /> */}
               <div className="row justify-content-between">
                 <MenuWidget />
               </div>

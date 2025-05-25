@@ -219,7 +219,7 @@ const NotSalePropertyAuction = () => {
                               }}
                               onClick={() => handleActionClick(listing)}
                             >
-                              Action
+                              Sell on Auction
                             </button>
                           </div>
                         </div>

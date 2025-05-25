@@ -11,14 +11,14 @@ const ReviewContent = ({ reviews = [], meta = {}, onPageChange }) => {
         </h2>
         {reviews.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {reviews.map((review) => (
+            {reviews?.map((review) => (
               <ReviewCard key={review.id} review={review} />
             ))}
           </div>
         ) : (
           <p className="text-center text-gray-600">No reviews available.</p>
         )}
-        {reviews.length > 0 && (
+        {reviews?.length > 0 && (
           <Pagination meta={meta} onPageChange={onPageChange} />
         )}
       </div>

@@ -50,7 +50,7 @@ export default function FilterComponent() {
           {/* Search Input */}
           <div className="col-span-1">
             <label className="font-semibold text-lg text-gray-800 mb-2 flex items-center">
-              <i className="fas fa-search text-green-500 mr-2"></i> Search
+              <i className="fas fa-search text-[#10572A] mr-2"></i> Search
             </label>
             <input
               type="search"
@@ -64,7 +64,7 @@ export default function FilterComponent() {
           {/* Square Footage Filter */}
           <div className="col-span-1">
             <label className="font-semibold text-lg text-gray-800 mb-2 flex items-center">
-              <i className="fas fa-ruler-combined text-green-500 mr-2"></i>{" "}
+              <i className="fas fa-ruler-combined text-[#10572A] mr-2"></i>{" "}
               Square Footage
             </label>
             <select
@@ -86,7 +86,7 @@ export default function FilterComponent() {
           {/* Bedrooms Filter */}
           <div className="col-span-1">
             <label className="font-semibold text-lg text-gray-800 mb-2 flex items-center">
-              <i className="fas fa-bed text-green-500 mr-2"></i> Bedrooms
+              <i className="fas fa-bed text-[#10572A] mr-2"></i> Bedrooms
             </label>
             <select
               value={selectedBedroom}
@@ -107,7 +107,7 @@ export default function FilterComponent() {
           {/* Bathrooms Filter */}
           <div className="col-span-1">
             <label className="font-semibold text-lg text-gray-800 mb-2 flex items-center">
-              <i className="fas fa-bath text-green-500 mr-2"></i> Bathrooms
+              <i className="fas fa-bath text-[#10572A] mr-2"></i> Bathrooms
             </label>
             <select
               value={selectedBathroom}
@@ -129,9 +129,9 @@ export default function FilterComponent() {
           <div className="col-span-1 flex items-end">
             <button
               onClick={handleSearch}
-              className="w-full px-6 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 hover:scale-105 transition-all duration-200 flex items-center justify-center shadow-md"
+              className="w-full px-6 py-2 bg-[#10572A] text-white text-sm font-semibold rounded-lg  hover:scale-105 transition-all duration-200 flex items-center justify-center shadow-md"
             >
-              <i className="fas fa-search text-yellow-400 mr-2"></i> Search
+              <i className="fas fa-search mr-2"></i> Search
             </button>
           </div>
         </div>

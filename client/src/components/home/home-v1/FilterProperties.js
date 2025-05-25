@@ -56,10 +56,10 @@ const FilterProperties = () => {
       <div className="row wow fadeInUp" data-wow-delay="100ms">
         <div className="col-lg-12">
           <div className="main-title2 flex justify-between items-center w-full">
-            <h2 className="text-3xl font-bold">Discover Popular Properties</h2>
+            <h2 className="text-3xl font-bold">All Available Properties</h2>
             <Link
               href="/properties"
-              className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200"
+              className="bg-[#10572A] text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200"
             >
               View All
             </Link>
@@ -143,15 +143,17 @@ const FilterProperties = () => {
                             </div>
                             <div className="list-content">
                               <h6 className="list-title">
-                                <Link href={`/product/${listing.id}`}>
-                                  {listing.description}
+                                <Link href={`/product/${listing?.id}`}>
+                                  {listing?.description}
                                 </Link>
                               </h6>
 
                               <div className="d-flex justify-content-between align-items-center">
                                 <div className="list-price">
-                                  {listing.total_price.toLocaleString()}{" "}
-                                  <span>৳</span>
+                                  <p className="text-[#10572A]">
+                                    {" "}
+                                    {listing?.total_price} ৳
+                                  </p>
                                 </div>
                                 <div className="flex items-center gap-4 bg-gray-50 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                                   <a

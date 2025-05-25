@@ -18,7 +18,11 @@ const ContactForm = () => {
                 <FaPhoneAlt className="text-2xl text-[#00C194] mt-1" />
                 <div>
                   <p className="text-lg font-semibold text-gray-800">Call Us</p>
-                  <p className="text-gray-600">+1 234 567 890</p>
+                  <p className="text-gray-600">HOTLINE:- 09617-777-000</p>
+                  <p className="text-gray-600">MOBILE:- +880 1901-310845</p>
+                  <p className="text-gray-600">MOBILE:- +880 1901-310846</p>
+                  <p className="text-gray-600">MOBILE:- +880 1901-365040</p>
+                  <p className="text-gray-600">MOBILE:- +880 1740 362 000</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
@@ -37,7 +41,12 @@ const ContactForm = () => {
                     Visit Us
                   </p>
                   <p className="text-gray-600">
-                    123 Main Street, City, Country
+                    CORPORATE OFFICE: 23/2, SEL HUQ SKY PARK, LEVEL- 4, SHYMOLI,
+                    DHAKA.
+                  </p>
+                  <p className="text-gray-600">
+                    SITE OFFICE:- 2ND & 3RD FLOOR, TOKYO PLAZA, AMIN MOHAMMAD
+                    MODEL TOWN, DHAKA
                   </p>
                 </div>
               </div>
@@ -84,7 +93,7 @@ const ContactForm = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-3 bg-[#00C194] text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-3 bg-[#10572A] text-white text-lg font-semibold rounded-lg transition duration-200 focus:outline-none"
               >
                 Send Message
               </button>

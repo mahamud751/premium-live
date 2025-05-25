@@ -1,118 +1,96 @@
 "use client";
-import {
-  homeItems,
-  blogItems,
-  listingItems,
-  propertyItems,
-  pageItems,
-} from "@/data/navItems";
 import { useAuth } from "@/hooks/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const MainMenu = () => {
   const { user } = useAuth();
   const pathname = usePathname();
-  const [topMenu, setTopMenu] = useState("");
-  const [, setSubmenu] = useState("");
 
-  useEffect(() => {
-    homeItems.forEach((elm) => {
-      if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-        setTopMenu("home");
-      }
-    });
-    blogItems.forEach((elm) => {
-      if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-        setTopMenu("blog");
-      }
-    });
-    pageItems.forEach((elm) => {
-      if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-        setTopMenu("pages");
-      }
-    });
-    propertyItems.forEach((item) =>
-      item.subMenuItems.forEach((elm) => {
-        if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-          setTopMenu("property");
-          setSubmenu(item.label);
-        }
-      })
-    );
-    listingItems.forEach((item) =>
-      item.submenu.forEach((elm) => {
-        if (elm.href.split("/")[1] == pathname.split("/")[1]) {
-          setTopMenu("listing");
-          setSubmenu(item.title);
-        }
-      })
-    );
-  }, [pathname]);
+  // Function to determine if a menu item is active
+  const isActive = (path) => {
+    return pathname === path || (path !== "/" && pathname.startsWith(path));
+  };
 
   return (
-    <ul className="ace-responsive-menu ">
+    <ul className="ace-responsive-menu">
       <li className="visible_list dropitem">
         <Link className="list-item" href="/">
-          <span className={topMenu == "home" ? "title menuActive" : "title"}>
+          <span className={`title ${isActive("/") ? "text-[#10572A]" : ""}`}>
             Home
           </span>
-          {/* 
-          <span className="arrow"></span> */}
         </Link>
-
-        {/* Level Two*/}
-        {/* <ul className="sub-menu">
-          {homeItems.map((item, index) => (
-            <li key={index}>
-              <Link className={`${handleActive(item.href)}`} href={item.href}>
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul> */}
       </li>
+
       {user && (
         <li className="visible_list dropitem">
           <Link className="list-item" href="/marketplaces">
-            <span>MarketPlaces</span>
+            <span
+              className={`title ${
+                isActive("/marketplaces") ? "text-[#10572A]" : ""
+              }`}
+            >
+              MarketPlaces
+            </span>
           </Link>
         </li>
       )}
+
       <li className="visible_list dropitem">
         <Link className="list-item" href="/properties">
-          <span>Properties</span>
+          <span
+            className={`title ${
+              isActive("/properties") ? "text-[#10572A]" : ""
+            }`}
+          >
+            Properties
+          </span>
         </Link>
       </li>
+
       <li className="visible_list dropitem">
         <Link className="list-item" href="/projects">
-          <span>Projects</span>
+          <span
+            className={`title ${isActive("/projects") ? "text-[#10572A]" : ""}`}
+          >
+            Projects
+          </span>
         </Link>
       </li>
+
       <li className="visible_list dropitem">
         <Link className="list-item" href="/reviews">
-          <span>Reviews</span>
+          <span
+            className={`title ${isActive("/reviews") ? "text-[#10572A]" : ""}`}
+          >
+            Reviews
+          </span>
         </Link>
       </li>
+
       <li className="megamenu_style dropitem">
         <Link className="list-item" href="/about">
-          <span className={topMenu == "listing" ? "title menuActive" : "title"}>
+          <span
+            className={`title ${isActive("/about") ? "text-[#10572A]" : ""}`}
+          >
             About
           </span>
         </Link>
       </li>
+
       <li className="visible_list dropitem">
         <Link className="list-item" href="/contact">
-          <span>Contact</span>
+          <span
+            className={`title ${isActive("/contact") ? "text-[#10572A]" : ""}`}
+          >
+            Contact
+          </span>
         </Link>
       </li>
 
       <li className="visible_list dropitem">
         <Link className="list-item" href="/faq">
-          <span
-            className={topMenu == "property" ? "title menuActive" : "title"}
-          >
+          <span className={`title ${isActive("/faq") ? "text-[#10572A]" : ""}`}>
             Faq
           </span>
         </Link>
@@ -120,10 +98,11 @@ const MainMenu = () => {
 
       <li className="megamenu_style dropitem">
         <Link className="list-item" href="/blogs">
-          <span className={topMenu == "listing" ? "title menuActive" : "title"}>
+          <span
+            className={`title ${isActive("/blogs") ? "text-[#10572A]" : ""}`}
+          >
             Blogs
           </span>
-          {/* <span className="arrow"></span> */}
         </Link>
       </li>
     </ul>
